@@ -1,18 +1,20 @@
 
+# Repeats facts a maximum of 5 five times (or two for those above a
+# learning metric of 1), and displaying those less well known first. 
 
 # standard fact class
 class Fact
-    attr_accessor :question, :answer, :metric, :repeat_count
+    attr_accessor :question, :answer, :metric, :repeat_count, :last_displayed
     def initialize(question, answer)
         @question = question
         @answer = answer
         # learning metric 
         @metric = 1.0
-        # a user display count
         @repeat_count = 0
+        @last_displayed = false
     end
 end
-# mutlipl-choice fact class
+
 class MultChoiceFact < Fact
     def initialize(question, answer)
         super
@@ -24,8 +26,70 @@ end
 
 # card class
 class Cards 
-    attr_accessor :question, :answer, :metric, :facts
+    attr_accessor :facts, :userAnswer
     def initialize()
         @facts = []
-        @answer = nil
+        @userAnswer = nil
+    end
+
+    def ask_q()
+        
+        while userAnswer != "" 
+            # sort facts by learning metric, checking to see if they were last displayed
+            i = 0
+            @facts = sort_by_metric(@facts)
+            if @facts[i].last_displayed
+                i = rand(0..@facts.length-1)
+            end
+            
+            # print questions within boxes
+            print TTY::Box.frame @facts[i].question
+            puts
+            userAnswer = gets.chomp
+            
+            # if @facts[i].answer.downcase == answer.downcase
+            if @facts[i].answer == userAnswer
+                print TTY::Box.frame "Nice work!"
+                @facts[i].metric *= 1.2
+                # puts @facts[i].metric
+                @facts[i].repeat_count += 1
+            else
+                # puts @facts[i].metric
+                # puts "Wrong, here is the answer:"
+                wrongAnswer =  "Wrong, the answer is:  #{@facts[i].answer} "
+                puts
+                print TTY::Box.frame wrongAnswer
+                @facts[i].metric *= 0.8
+                @facts[i].repeat_count += 1
+            end
+            @facts[i].last_displayed = !@facts[i].last_displayed
+        end
     end 
+
+    #change sorting algorithm
+    def sort_by_metric(array)
+        #bubble sort
+        return array if array.size <= 1
+        swap = true
+        while swap
+            swap = false
+            (array.length - 1).times do |x|
+            if array[x].metric > array[x+1].metric 
+                array[x], array[x+1] = array[x+1], array[x]
+                swap = true
+            end
+            end
+        end
+        return array
+    end
+
+    def choose_facts
+        # list facts and allow you to choose using tty-prompt 
+
+    end
+
+    def add_fact
+        # function for adding a fact to @facts[]
+
+    end
+end
