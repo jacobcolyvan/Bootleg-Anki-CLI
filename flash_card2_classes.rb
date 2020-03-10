@@ -2,7 +2,6 @@
 # Repeats facts a maximum of 5 five times (or two for those above a
 # learning metric of 1), and displaying those less well known first. 
 
-# standard fact class
 class Fact
     attr_accessor :question, :answer, :metric, :repeat_count, :last_displayed
     def initialize(question, answer)
@@ -10,7 +9,6 @@ class Fact
         @answer = answer
         # learning metric 
         @metric = 1.0
-        @repeat_count = 0
         @last_displayed = false
     end
 end
@@ -30,12 +28,13 @@ class Cards
     def initialize()
         @facts = []
         @userAnswer = nil
+        @user_score = 0
     end
-
 
     # def ask_q()
     def random_question_mode()
         question_count = 0
+        prompt = TTY::Prompt.new
         while userAnswer != "" && question_count < 15
             # sort facts by learning metric, checking to see if they were last displayed
             i = 0
@@ -44,29 +43,31 @@ class Cards
                 i = rand(0..@facts.length-1)
             end
             
-            # print questions within boxes
+            userAnswer = prompt.ask(" #{@facts[i].question}  ")
             # print TTY::Box.frame @facts[i].question
-            puts @facts[i].question
-            userAnswer = gets.chomp
-            
-            if @facts[i].answer == userAnswer
-                # print TTY::Box.frame "Nice work!"
-                puts "Nice Work! \n------- "
-                @facts[i].metric *= 1.2
-                # @facts[i].repeat_count += 1
-            else
-                wrongAnswer =  "Nup, the answer is:  #{@facts[i].answer} \n-------"
-                # print TTY::Box.frame wrongAnswer
-                puts wrongAnswer
-                @facts[i].metric *= 0.8
-                # @facts[i].repeat_count += 1
-            end
+            check_answer(userAnswer, i)
 
             @facts[i].last_displayed = !@facts[i].last_displayed
             question_count += 1
         end
+        puts "You got #{@user_score}/15 \n \n \n"
+        @user_score = 0
         menu_choice()
     end 
+
+    def check_answer(userAnswer, i)
+        if @facts[i].answer == userAnswer
+            puts " Nice Work! \n ------- "
+            @facts[i].metric *= 1.2
+            @user_score += 1
+        else
+            wrongAnswer =  " Nup, the answer is:  #{@facts[i].answer} \n -------"
+            # print TTY::Box.frame wrongAnswer
+            puts wrongAnswer
+            @facts[i].metric *= 0.8
+        end
+    end
+
 
     #change sorting algorithm
     def sort_by_metric(array)
@@ -82,10 +83,10 @@ class Cards
             end
             end
         end
-        return array
+        return array  
     end
 
-    def choose_q
+    def choose_q(with_answer)
         # list facts and allow you to choose using tty-prompt 
         prompt = TTY::Prompt.new
         questions = []
@@ -94,28 +95,54 @@ class Cards
         end
 
         # while userAnswer != ""
-        choice = prompt.select("Choose a question", questions)
-        @facts.each  do |fact|
-            if choice == fact.question
-                puts fact.answer
+        choice = prompt.select(" Choose a question", questions)
+        # @facts.each  do |fact|
+        for i in 0..@facts.length-1
+            if choice == @facts[i].question && !with_answer
+                userAnswer = prompt.ask(" #{choice}")
+                check_answer(userAnswer, i)
+            elsif choice == @facts[i].question && with_answer
+                puts " #{@facts[i].answer}"
             end
         end
         menu_choice()
     end
 
     def add_fact
-        puts "What is your question?"
-        q = gets.chomp
-        puts "What is the answer?"
-        a = gets.chomp
-        facts.push(Fact.new(q, a))
-        puts facts[-1].question
-
+        prompt = TTY::Prompt.new
+        q = prompt.ask(" What is your question?")
+        a = prompt.ask(" What is the answer?")
+        @facts.push(Fact.new(q, a))
+        puts @facts[-1].question
+        
         menu_choice()
     end
-
-    # def check_fact
 end
 
+
+def menu_choice
+    choices =  [
+        "Choose Questions Mode (you see the answers)", 
+        "Choose Questions Mode (you pick the answers)",
+        "Random Question Mode",
+        "Add new question", 
+        "Exit"
+    ]
+
+    prompt = TTY::Prompt.new
+    choice = prompt.select("  What do you you want to do?\n", choices)
+    if choice == choices[0]
+        $mathQuestions.choose_q(true)
+    elsif choice == choices[1]
+        $mathQuestions.choose_q(false)
+    elsif choice == choices[2]
+        $mathQuestions.random_question_mode()
+    elsif choice == choices[3]
+        $mathQuestions.add_fact()
+    else 
+        puts
+        exit
+    end
+end
 
 
