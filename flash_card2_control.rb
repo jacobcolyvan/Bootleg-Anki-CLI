@@ -20,7 +20,7 @@ $mathQuestions.facts.push(Fact.new("What is 90 x 0?", "27"))
 
 def menu_choice
     puts
-    choices =  ["Choose Questions Mode", "Random Question Mode", "Add new question"]
+    choices =  ["Choose Questions Mode (you see the answers)", "Random Question Mode", "Add new question", "Exit"]
     prompt = TTY::Prompt.new
     choice = prompt.select("What do you you want to do?", choices)
 
@@ -28,8 +28,11 @@ def menu_choice
         $mathQuestions.choose_q()
     elsif choice == choices[1]
         $mathQuestions.random_question_mode()
-    else 
+    elsif choice == choices[2]
         $mathQuestions.add_fact()
+    else 
+        puts
+        exit
     end
 end
 

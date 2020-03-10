@@ -35,7 +35,8 @@ class Cards
 
     # def ask_q()
     def random_question_mode()
-        while userAnswer != "" 
+        question_count = 0
+        while userAnswer != "" && question_count < 15
             # sort facts by learning metric, checking to see if they were last displayed
             i = 0
             @facts = sort_by_metric(@facts)
@@ -44,27 +45,27 @@ class Cards
             end
             
             # print questions within boxes
-            print TTY::Box.frame @facts[i].question
-            puts
+            # print TTY::Box.frame @facts[i].question
+            puts @facts[i].question
             userAnswer = gets.chomp
             
-            # if @facts[i].answer.downcase == answer.downcase
             if @facts[i].answer == userAnswer
-                print TTY::Box.frame "Nice work!"
+                # print TTY::Box.frame "Nice work!"
+                puts "Nice Work! \n------- "
                 @facts[i].metric *= 1.2
-                # puts @facts[i].metric
-                @facts[i].repeat_count += 1
+                # @facts[i].repeat_count += 1
             else
-                # puts @facts[i].metric
-                # puts "Wrong, here is the answer:"
-                wrongAnswer =  "Wrong, the answer is:  #{@facts[i].answer} "
-                print TTY::Box.frame wrongAnswer
-                puts 
+                wrongAnswer =  "Nup, the answer is:  #{@facts[i].answer} \n-------"
+                # print TTY::Box.frame wrongAnswer
+                puts wrongAnswer
                 @facts[i].metric *= 0.8
-                @facts[i].repeat_count += 1
+                # @facts[i].repeat_count += 1
             end
+
             @facts[i].last_displayed = !@facts[i].last_displayed
+            question_count += 1
         end
+        menu_choice()
     end 
 
     #change sorting algorithm
@@ -111,8 +112,6 @@ class Cards
         puts facts[-1].question
 
         menu_choice()
-
-
     end
 
     # def check_fact
