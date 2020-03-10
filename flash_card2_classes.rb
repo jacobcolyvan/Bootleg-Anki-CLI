@@ -32,8 +32,9 @@ class Cards
         @userAnswer = nil
     end
 
-    def ask_q()
-        
+
+    # def ask_q()
+    def random_question_mode()
         while userAnswer != "" 
             # sort facts by learning metric, checking to see if they were last displayed
             i = 0
@@ -57,8 +58,8 @@ class Cards
                 # puts @facts[i].metric
                 # puts "Wrong, here is the answer:"
                 wrongAnswer =  "Wrong, the answer is:  #{@facts[i].answer} "
-                puts
                 print TTY::Box.frame wrongAnswer
+                puts 
                 @facts[i].metric *= 0.8
                 @facts[i].repeat_count += 1
             end
@@ -83,13 +84,39 @@ class Cards
         return array
     end
 
-    def choose_facts
+    def choose_q
         # list facts and allow you to choose using tty-prompt 
+        prompt = TTY::Prompt.new
+        questions = []
+        @facts.each  do |fact|
+            questions.push(fact.question)
+        end
 
+        # while userAnswer != ""
+        choice = prompt.select("Choose a question", questions)
+        @facts.each  do |fact|
+            if choice == fact.question
+                puts fact.answer
+            end
+        end
+        menu_choice()
     end
 
     def add_fact
-        # function for adding a fact to @facts[]
+        puts "What is your question?"
+        q = gets.chomp
+        puts "What is the answer?"
+        a = gets.chomp
+        facts.push(Fact.new(q, a))
+        puts facts[-1].question
+
+        menu_choice()
+
 
     end
+
+    # def check_fact
 end
+
+
+
