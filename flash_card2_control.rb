@@ -25,6 +25,7 @@ font = TTY::Font.new(:standard)
 puts font.write("FLASHCARDS").colorize(:red)
 prompt = TTY::Prompt.new
 $deck = prompt.select("  What do you you want to do?\n", %w(Math Assorted))
+
 case $deck
 when "Math"
     $deck = mathQuestions

@@ -18,7 +18,6 @@ class Cards
         @user_score = 0
     end
 
-    # def ask_q()
     def random_question_mode()
         for i in 0..@facts.length-1
             facts[i].metric = 1
@@ -50,29 +49,29 @@ class Cards
                 
                 userAnswer = prompt.ask(" #{@facts[i].question}  ")
                 # print TTY::Box.frame @facts[i].question
-                check_answer(userAnswer, i)
+                puts check_answer(userAnswer, i)
+                # print TTY::Box.frame (check_answer(prompt.ask(" #{@facts[i].question}  "), i))
 
                 @facts[i].last_displayed = !@facts[i].last_displayed
                 question_count += 1
             
         end
         font = TTY::Font.new(:doom)
-        puts font.write("You got     #{@user_score}/#{questionLimit}").colorize(:red)
+        print TTY::Box.frame font.write("You got     #{@user_score}/#{questionLimit}").colorize(:red)
         sleep(2)
         @user_score = 0
         menu_choice()
     end 
 
     def check_answer(userAnswer, i)
-        if @facts[i].answer == userAnswer
-            puts "  Nice Work! \n  ------- "
+        if @facts[i].answer.downcase == userAnswer.to_s.downcase
             @facts[i].metric *= 1.2
             @user_score += 1
+            return "  Nice Work! \n  ------- "
         else
-            wrongAnswer =  "  Nup, the answer is:  " +"#{@facts[i].answer}".colorize(:red) + "  \n -------"
-            # print TTY::Box.frame wrongAnswer
-            puts wrongAnswer
             @facts[i].metric *= 0.8
+            wrongAnswer =  "  Nup, the answer is:  " +"#{@facts[i].answer}".colorize(:red) + "  \n -------"
+            return wrongAnswer
         end
     end
 

@@ -1,13 +1,9 @@
-Not much to read here.
-
 ### Purpose and Scope
-The application is as a flashcard app, very similar to the popular notetaking app *anki*. It allows the user to add, view, and test themselves with questions. It has a few different modes, the most important being a random question testing mode, which scores the users correct responses out of a user defined limit. Each question/answer pair has a built in learning metric, which determines the frequency a particular question is shown to the user. 
+The application is as a flashcard app, very similar to the notetaking app *anki*. It allows the user to add, view, and test themselves with questions (both user added and provided). It has a few different modes, the most important being a random question testing mode, which scores the users correct responses against a user defined amount of questiuons. Each question/answer pair has a built in learning metric, which determines the frequency a particular question is shown to the user; and the program aims to ensure that the same questions don't get shown too much. 
 
-If used correctly this terminal app should help the user learn new content through testing. It aims to implement a very naive model of spaced reptition, where those questions that are less well known are asked more frequently, and those where the user scores correctly, are shown less frequently. The target audience is for students, to help content be learned more efficiently. 
+If used correctly this terminal app should help the user learn new content through testing. It aims to implement a very naive model of spaced reptition, where those questions that are less well known are asked more frequently, and those where the user scores correctly, are shown less frequently. The target audience is for students, as a learning aid to to help content be learned more efficiently and effectively. It differs from the main aleternatives in that it is completely run in the terminal, and is operated through the command line interface. However, the program utilises gems such as tty-prompt, tty-font, tty-box and colorize to make the program more appealing and engaging. It is still very barebones, and there is much that can be done to extend it in the future by any that want to get involved. 
 
-The program utilises gems such as tty-prompt and tty-font to make the program more appealing and engaging. It is still very barebones, and much can be done to extend it in the future.
-
-Whne the CLI is launched it will request the user to choose a deck. To which it will proceed to a menu screen, where they can choose between three options. These options are to add a card, test themselves with order dcetrmined by program (combination of learning metric and calls to random), or they can opt to choose the questions to answer individually. The program will not exit unless the "exit" option is chosen in the menu. 
+In terms of operation and user experiencce, when the application is launched it will request the user to choose a deck. Two decks are included by default, however more can be added by including an array in the arrayOfFacts file, and assigning it a variable in the create_a_deck() method. From here it it will proceed to a menu screen, where three options are displayed. These options are to add a card, test a series of program order detrmined questions (combination of learning metric and calls to random), or they can opt to choose the questions to answer individually. The program will not exit unless the "exit" option is chosen in the menu. 
 
 <br>
 
@@ -30,12 +26,21 @@ This is a menu choice that first prompts the user as to how many questions they 
 ![Flow diagram of terminal app control flow](./terminal_app.jpg)
 
 ### Help/Installation
-** gems need to be installed // requires gems
-** source code needs to be downloaded (all 3); ensure all are in the saem folder
-** run the ruby file "flash_card2_control.rb"
+This program requires four gems to function as intended (refer to the docs of each for intsallation help), these are:
 
-** feel free to add any facts you want in the "arrayOfFacts.rb file
-** NOTE: any facts added whilst in the program itself will onlyt be saved in that session, not permanently to the "arrayOfFacts.rb" file. 
+* TTY-box
+* TTY-prompt
+* TTY-font
+* colorize
+  
+
+Source code needs to be downloaded (including all three critical files: flash_card2_classes.rb, flash_card2_control.rb, and arrayOfFacts,rb). Ensure all of these files are in the same folder
+Run the ruby file "flash_card2_control.rb", to start the program.
+
+
+
+The program comes with two very limited preprogrammed decks; question/answeer pairs can be added to existing deks or entire decks can be added (as arrays) in the "arrayOfFacts.rb file.
+NOTE: any questions added whilst in the program itself will only be saved for use in that session, not permanently to the "arrayOfFacts.rb" file. 
 
 
 ### Implementation plan
