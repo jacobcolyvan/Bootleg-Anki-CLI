@@ -7,10 +7,12 @@ require 'tty-prompt'
 require 'colorize'
 require 'tty-font'
 
+
+# create Fact objects out of array of facts
 def makeFactObjects(arr)
     tempFacts = Cards.new()
     arr.each do |fact|
-        tempFacts.facts.push(Fact.new(fact[0], fact[1]))
+        tempFacts.facts.push(Fact.new([fact[0], fact[1]]))
     end
     return tempFacts
 end
@@ -23,8 +25,6 @@ $mathQuestions = makeFactObjects($mathFacts)
 puts `clear`
 font = TTY::Font.new(:standard)
 puts font.write("FLASHCARDS").colorize(:red)
-sleep(2)
-puts font.write("get   pscyhed")
 sleep(2)
 
 menu_choice()

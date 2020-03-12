@@ -16,5 +16,5 @@ $mathFacts = [
     [" What is 3^3?", "27"],
     [" What is 3^2?", "9"],
     [" What is 3^4?", "81"],
-    [" What is 90 x 0?", "0"],
+    [" What is 90 x 0?", "0"]
 ]
