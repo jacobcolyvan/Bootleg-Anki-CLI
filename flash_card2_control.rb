@@ -17,15 +17,21 @@ def makeFactObjects(arr)
     return tempFacts
 end
 
-$facts = makeFactObjects($assortedFacts)
-$mathQuestions = makeFactObjects($mathFacts)
-
-
+facts = makeFactObjects($assortedFacts)
+mathQuestions = makeFactObjects($mathFacts)
 
 puts `clear`
 font = TTY::Font.new(:standard)
 puts font.write("FLASHCARDS").colorize(:red)
-sleep(2)
+prompt = TTY::Prompt.new
+$deck = prompt.select("  What do you you want to do?\n", %w(Math Assorted))
+case $deck
+when "Math"
+    $deck = mathQuestions
+else 
+    $deck = facts
+end
+puts `clear`
 
 menu_choice()
 

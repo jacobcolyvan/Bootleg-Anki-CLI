@@ -1,7 +1,3 @@
-
-# Repeats facts a maximum of 5 five times (or two for those above a
-# learning metric of 1), and displaying those less well known first. 
-
 class Fact
     attr_accessor :question, :answer, :metric, :repeat_count, :last_displayed
     def initialize(question_answer)
@@ -25,8 +21,10 @@ class Cards
     # def ask_q()
     def random_question_mode()
         prompt = TTY::Prompt.new
+        @user_score = 0
         puts 
         questionLimit = prompt.ask("  How many questions would you like to answer?  ")
+        # checks if input is an integer
         isNumber = /\A[+-]?\d+(\.[\d]+)?\z/
         questionLimit = questionLimit.to_s unless questionLimit.is_a? String
         if isNumber.match "questionLimit"
@@ -54,9 +52,8 @@ class Cards
                 question_count += 1
             
         end
-        # puts "You got #{@user_score}/15 \n \n \n"
         font = TTY::Font.new(:doom)
-        puts font.write("You got     #{@user_score}/#{question_limit}").colorize(:red)
+        puts font.write("You got     #{@user_score}/#{questionLimit}").colorize(:red)
         sleep(2)
         @user_score = 0
         menu_choice()
@@ -93,7 +90,7 @@ class Cards
 
     
 
-    def choose_q(with_answer)
+    def choose_q()
         # list facts and allow you to choose using tty-prompt 
         prompt = TTY::Prompt.new
         questions = []
@@ -103,26 +100,23 @@ class Cards
 
         choice = prompt.select("  Choose a question", questions)
         for i in 0..@facts.length-1
-            if choice == @facts[i].question && !with_answer
+            if  choice == @facts[i].question
                 userAnswer = prompt.ask(" #{choice}")
                 check_answer(userAnswer, i)
-            elsif choice == @facts[i].question && with_answer
-                puts " #{@facts[i].answer}"
             end
         end
-        sleep(1)
+        sleep(2)
         menu_choice()
         
     end
 
     def add_fact
         prompt = TTY::Prompt.new
-        q = prompt.ask(" What is your question?")
-        a = prompt.ask(" What is the answer?")
+        q = prompt.ask("  What is your question?")
+        a = prompt.ask("  What is the answer?")
         @facts.push(Fact.new([q, a]))
-        puts @facts[-1].question
-        
-        sleep(1)
+        puts "Question successfully added to deck."
+        sleep(2)
         menu_choice()
     end
 end
@@ -131,8 +125,7 @@ end
 def menu_choice
     puts`clear`
     choices =  [
-        " Choose Questions Mode (you see the answers)", 
-        " Choose Questions Mode (you pick the answers)",
+        " Choose Questions Mode",
         " Random Question Mode",
         " Add new question", 
         " Exit"
@@ -140,28 +133,17 @@ def menu_choice
 
 
     prompt = TTY::Prompt.new
-    deck = prompt.select("  What do you you want to do?\n", %w(Math Assorted))
-    case deck
-    when "Math"
-        deck = $mathQuestions
-    else 
-        deck = $mathQuestions
-    end
-    puts `clear`
-
     choice = prompt.select("  What do you you want to do?\n", choices)
     
     
     
     case choice
     when choices[0]
-        deck.choose_q(true)
+        $deck.choose_q()
     when choices[1]
-        deck.choose_q(false)
+        $deck.random_question_mode()
     when choices[2]
-        deck.random_question_mode()
-    when choices[3]
-        deck.add_fact()
+        $deck.add_fact()
     else 
         puts
         exit
