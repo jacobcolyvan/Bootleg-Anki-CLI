@@ -1,20 +1,32 @@
 require_relative './flash_card2_classes.rb'
+require_relative './arrayOfFacts.rb'
+windowSize = fork{ exec 'printf', "\e[8;20;100t"}
 
 require 'tty-box'
 require 'tty-prompt'
+require 'colorize'
+require 'tty-font'
 
-spaceFacts = Cards.new()
-deepOceanFacts = Cards.new()
-$mathQuestions = Cards.new()
+def makeFactObjects(arr)
+    tempFacts = Cards.new()
+    arr.each do |fact|
+        tempFacts.facts.push(Fact.new(fact[0], fact[1]))
+    end
+    return tempFacts
+end
 
-$mathQuestions.facts.push(Fact.new("What is 7 + 2?", "9"))
-$mathQuestions.facts.push(Fact.new("What is 6 x 6?", "36"))
-$mathQuestions.facts.push(Fact.new("What is 3^3?", "27"))
-$mathQuestions.facts.push(Fact.new("What is 3^2?", "9"))
-$mathQuestions.facts.push(Fact.new("What is 3^4?", "81"))
-$mathQuestions.facts.push(Fact.new("What is 90 x 0?", "0"))
+$facts = makeFactObjects($assortedFacts)
+$mathQuestions = makeFactObjects($mathFacts)
+
+
 
 puts `clear`
+font = TTY::Font.new(:standard)
+puts font.write("FLASHCARDS").colorize(:red)
+sleep(2)
+puts font.write("get   pscyhed")
+sleep(2)
+
 menu_choice()
 
 

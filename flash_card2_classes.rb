@@ -13,15 +13,6 @@ class Fact
     end
 end
 
-class MultChoiceFact < Fact
-    def initialize(question, answer)
-        super
-        @answer = answer.split(", ")
-    end
-end
-
-
-
 # card class
 class Cards 
     attr_accessor :facts, :userAnswer
@@ -33,43 +24,46 @@ class Cards
 
     # def ask_q()
     def random_question_mode()
+        puts 
         question_count = 0
         prompt = TTY::Prompt.new
         while userAnswer != "" && question_count < 15
-            # sort facts by learning metric, checking to see if they were last displayed
-            i = 0
-            @facts = sort_by_metric(@facts)
-            if @facts[i].last_displayed
-                i = rand(0..@facts.length-1)
-            end
-            
-            userAnswer = prompt.ask(" #{@facts[i].question}  ")
-            # print TTY::Box.frame @facts[i].question
-            check_answer(userAnswer, i)
+                # sort facts by learning metric, checking to see if they were last displayed
+                i = 0
+                @facts = sort_by_metric(@facts)
+                if @facts[i].last_displayed
+                    i = rand(0..@facts.length-1)
+                end
+                
+                userAnswer = prompt.ask(" #{@facts[i].question}  ")
+                # print TTY::Box.frame @facts[i].question
+                check_answer(userAnswer, i)
 
-            @facts[i].last_displayed = !@facts[i].last_displayed
-            question_count += 1
+                @facts[i].last_displayed = !@facts[i].last_displayed
+                question_count += 1
+            
         end
-        puts "You got #{@user_score}/15 \n \n \n"
+        # puts "You got #{@user_score}/15 \n \n \n"
+        font = TTY::Font.new(:doom)
+        puts font.write("You got     #{@user_score}/15").colorize(:red)
+        sleep(2)
         @user_score = 0
         menu_choice()
     end 
 
     def check_answer(userAnswer, i)
         if @facts[i].answer == userAnswer
-            puts " Nice Work! \n ------- "
+            puts "  Nice Work! \n  ------- "
             @facts[i].metric *= 1.2
             @user_score += 1
         else
-            wrongAnswer =  " Nup, the answer is:  #{@facts[i].answer} \n -------"
+            wrongAnswer =  "  Nup, the answer is:  " +"#{@facts[i].answer}".colorize(:red) + "  \n -------"
             # print TTY::Box.frame wrongAnswer
             puts wrongAnswer
             @facts[i].metric *= 0.8
         end
     end
 
-
-    #change sorting algorithm
     def sort_by_metric(array)
         #bubble sort
         return array if array.size <= 1
@@ -86,6 +80,8 @@ class Cards
         return array  
     end
 
+    
+
     def choose_q(with_answer)
         # list facts and allow you to choose using tty-prompt 
         prompt = TTY::Prompt.new
@@ -94,9 +90,7 @@ class Cards
             questions.push(fact.question)
         end
 
-        # while userAnswer != ""
-        choice = prompt.select(" Choose a question", questions)
-        # @facts.each  do |fact|
+        choice = prompt.select("  Choose a question", questions)
         for i in 0..@facts.length-1
             if choice == @facts[i].question && !with_answer
                 userAnswer = prompt.ask(" #{choice}")
@@ -105,7 +99,9 @@ class Cards
                 puts " #{@facts[i].answer}"
             end
         end
+        sleep(1)
         menu_choice()
+        
     end
 
     def add_fact
@@ -115,29 +111,33 @@ class Cards
         @facts.push(Fact.new(q, a))
         puts @facts[-1].question
         
+        sleep(1)
         menu_choice()
     end
 end
 
 
 def menu_choice
+    puts`clear`
     choices =  [
-        "Choose Questions Mode (you see the answers)", 
-        "Choose Questions Mode (you pick the answers)",
-        "Random Question Mode",
-        "Add new question", 
-        "Exit"
+        " Choose Questions Mode (you see the answers)", 
+        " Choose Questions Mode (you pick the answers)",
+        " Random Question Mode",
+        " Add new question", 
+        " Exit"
     ]
 
     prompt = TTY::Prompt.new
     choice = prompt.select("  What do you you want to do?\n", choices)
-    if choice == choices[0]
+    
+    case choice
+    when choices[0]
         $mathQuestions.choose_q(true)
-    elsif choice == choices[1]
+    when choices[1]
         $mathQuestions.choose_q(false)
-    elsif choice == choices[2]
+    when choices[2]
         $mathQuestions.random_question_mode()
-    elsif choice == choices[3]
+    when choices[3]
         $mathQuestions.add_fact()
     else 
         puts
