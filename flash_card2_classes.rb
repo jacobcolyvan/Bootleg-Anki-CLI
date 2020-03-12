@@ -20,6 +20,10 @@ class Cards
 
     # def ask_q()
     def random_question_mode()
+        for i in 0..@facts.length-1
+            facts[i].metric = 1
+        end
+
         prompt = TTY::Prompt.new
         @user_score = 0
         puts 
@@ -104,6 +108,7 @@ class Cards
                 userAnswer = prompt.ask(" #{choice}")
                 check_answer(userAnswer, i)
             end
+
         end
         sleep(2)
         menu_choice()
