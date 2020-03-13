@@ -105,9 +105,9 @@ class Cards
         for i in 0..@facts.length-1
             if  choice == @facts[i].question
                 userAnswer = prompt.ask(" #{choice}")
-                check_answer(userAnswer, i)
-            end
+                puts check_answer(userAnswer, i)
 
+            end
         end
         sleep(2)
         menu_choice()
@@ -123,6 +123,8 @@ class Cards
         sleep(2)
         menu_choice()
     end
+
+
 end
 
 

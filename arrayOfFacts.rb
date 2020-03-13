@@ -6,7 +6,10 @@ $assortedFacts = [
     [" What index does an array typically start at?", "0"],
     [" Whats Barbies real name?", "Barbara Millicent Roberts"],
     [" Can a sperm whale kill a person with their voice alone?", "Yes"],
-    [" What colour is mars?", "Red"]
+    [" What colour is mars?", "Red"],
+    [" Who won the Emu Wars?", "The Emus"],
+    [" Did Hitler only have one nut? (true/false)", "true"]
+
 ]
 
 
@@ -16,5 +19,6 @@ $mathFacts = [
     [" What is 3^3?", "27"],
     [" What is 3^2?", "9"],
     [" What is 3^4?", "81"],
-    [" What is 90 x 0?", "0"]
+    [" What is 90 x 0?", "0"],
+    [" What is 8 * (1 - 7)?", "-48"]
 ]

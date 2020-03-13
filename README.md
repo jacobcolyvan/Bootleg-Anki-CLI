@@ -37,13 +37,19 @@ This program requires four gems to function as intended (refer to the docs of ea
 Source code needs to be downloaded (including all three critical files: flash_card2_classes.rb, flash_card2_control.rb, and arrayOfFacts,rb). Ensure all of these files are in the same folder
 Run the ruby file "flash_card2_control.rb", to start the program.
 
-
-
 The program comes with two very limited preprogrammed decks; question/answeer pairs can be added to existing deks or entire decks can be added (as arrays) in the "arrayOfFacts.rb file.
 NOTE: any questions added whilst in the program itself will only be saved for use in that session, not permanently to the "arrayOfFacts.rb" file. 
 
 
 ### Implementation plan
+For my implementation plan I decided to use the project feature on github, utilising the kaban organisation method. This method splits the planning process into three tabs: to do; in progress; and done. Screenshots have been included below to show this planning process in progress. 
+
+
+
+![Terminal app code plan](./Terminal_app_code_plan.png)
+<br>
+![Flow diagram of terminal app control flow](./Terminal_app_documentation.png)
+
 
 
 ### User interaction and experience
