@@ -40,21 +40,17 @@ class Cards
         puts `clear`
         
         while question_count < questionLimit
-                # sort facts by learning metric, checking to see if they were last displayed
-                i = 0
-                @facts = sort_by_metric(@facts)
-                if @facts[i].last_displayed
-                    i = rand(0..@facts.length-1)
-                end
-                
-                userAnswer = prompt.ask(" #{@facts[i].question}  ")
-                # print TTY::Box.frame @facts[i].question
-                puts check_answer(userAnswer, i)
-                # print TTY::Box.frame (check_answer(prompt.ask(" #{@facts[i].question}  "), i))
-
-                @facts[i].last_displayed = !@facts[i].last_displayed
-                question_count += 1
+            # sort facts by learning metric, checking to see if they were last displayed
+            i = 0
+            @facts = sort_by_metric(@facts)
+            if @facts[i].last_displayed
+                i = rand(0..@facts.length-1)
+            end
             
+            userAnswer = prompt.ask(" #{@facts[i].question}  ")
+            puts check_answer(userAnswer, i)
+            @facts[i].last_displayed = !@facts[i].last_displayed
+            question_count += 1
         end
         font = TTY::Font.new(:doom)
         print TTY::Box.frame font.write("You got     #{@user_score}/#{questionLimit}").colorize(:red)
@@ -62,6 +58,7 @@ class Cards
         @user_score = 0
         menu_choice()
     end 
+
 
     def check_answer(userAnswer, i)
         if @facts[i].answer.downcase == userAnswer.to_s.downcase
@@ -74,6 +71,7 @@ class Cards
             return wrongAnswer
         end
     end
+
 
     def sort_by_metric(array)
         #bubble sort
@@ -91,7 +89,6 @@ class Cards
         return array  
     end
 
-    
 
     def choose_q()
         # list facts and allow you to choose using tty-prompt 
@@ -106,7 +103,6 @@ class Cards
             if  choice == @facts[i].question
                 userAnswer = prompt.ask(" #{choice}")
                 puts check_answer(userAnswer, i)
-
             end
         end
         sleep(2)
@@ -116,15 +112,15 @@ class Cards
 
     def add_fact
         prompt = TTY::Prompt.new
-        q = prompt.ask("  What is your question?")
-        a = prompt.ask("  What is the answer?")
+        q_prompt = prompt.ask("  What is your question?")
+        q = " " + q_prompt if q_prompt != nil
+        a_prompt = prompt.ask("  What is the answer?")
+        a = " " + a_prompt if a_prompt != nil
         @facts.push(Fact.new([q, a]))
-        puts "Question successfully added to deck."
+        puts "  Question successfully added to deck."
         sleep(2)
         menu_choice()
     end
-
-
 end
 
 
@@ -137,11 +133,8 @@ def menu_choice
         " Exit"
     ]
 
-
     prompt = TTY::Prompt.new
     choice = prompt.select("  What do you you want to do?\n", choices)
-    
-    
     
     case choice
     when choices[0]
