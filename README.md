@@ -9,7 +9,7 @@ In terms of operation and user experiencce, when the application is launched it 
 
 ### Features
 ##### Ability to add a question/answer
-Users are given an option in the menu to add a question/answer paur to the deck they've chosen. They're prompted for a question, followed by an answer. This calls a function to create a fact object out ofg the given inputs, which initialises other variables such as a learning metric, and add it to the deck with the given inputs. The question/answer pair can then be accessed throughout the rest of the program, and used like any of the other provided facts. It is however lost after the user exits the program.   
+Users are given an option in the menu to add a question/answer paur to the deck they've chosen. They're prompted for a question, followed by an answer. This calls a function to create a fact object out of the given inputs, which initialises other variables such as a learning metric, and add it to the deck with the given inputs. The question/answer pair can then be accessed throughout the rest of the program, and used like any of the other provided facts. It is however lost after the user exits the program.   
 <br>
 
 ##### Answer specific facts
@@ -23,7 +23,7 @@ This is a menu choice that first prompts the user as to how many questions they 
 
 
 ### Control Flow Diagram
-![Flow diagram of terminal app control flow](./terminal_app.jpg)
+![Flow diagram of terminal app control flow](./docs/terminal_app.jpg)
 
 ### Help/Installation
 This program requires four gems to function as intended (refer to the docs of each for intsallation help), these are:
@@ -42,17 +42,31 @@ NOTE: any questions added whilst in the program itself will only be saved for us
 
 
 ### Implementation plan
-For my implementation plan I decided to use the project feature on github, utilising the kaban organisation method. This method splits the planning process into three tabs: to do; in progress; and done. Screenshots have been included below to show this planning process in progress. 
+For my implementation plan I decided to use the project feature on github, utilising the kanban organisation method. This method splits the planning process into three tabs: to do; in progress; and done. Screenshots have been included below to show this planning process in progress. 
 
 
 
-![Terminal app code plan](./Terminal_app_code_plan.png)
+![Terminal app code plan kaban](./docs/Terminal_app_code_plan.png)
 <br>
-![Flow diagram of terminal app control flow](./Terminal_app_documentation.png)
-
+![Terminal app documentation plan kaban](./docs/Terminal_app_documentation.png)
 
 
 ### User interaction and experience
+Upon successful launch of the program within the command line, the user will be prompted to select a deck (out of the two available to choose, which are assortedFacts and mathFacts). This option is chosen through use of the up and down key. When chosen it will take the user to a menu choice screen. This presents four options (also accesible through up and down arrow keys) are: random question mode, choose a question mode, add a question, and exit. The exit option exits the program and the others are described below
+
+Random question mode asks for a number to use as a question limit. It then presents the user with an initially random question from the deck, prompts for keyboard input. If then checks whether the user answer is correct it and prints a message appraising the user if correct or printing the correct answer. Those questions that are less well known are repeated more frequently. It repeats this until the question limit is reached. It then prints what the user score against the question limti and takes them back to the menu selection.
+
+If add a question mode is chosen, the user is prompted to input a question through the keyboard, followed by an answer. It then prints if successful, and adds this to the deck as a fact object.
+
+Choose a question mode, allows the user to choose a question using the up/down arrows. It then prompts the user for keyboard input as an asnwer. It checks this answer and prints whether it was successful, if its not it prints the answer. Any questions added in the add a question mode are accessible here.
+
+
+### Error testing
+I followed through my control flow diagram, checking that code executed without errors at each decision points. This process can be seen in the screenshot below. 
+Multiple input types were checked at each control structure that required user input. All worked as expected. 
+
+![Terminal app documentation plan kaban](./docs/error_testing.png)
+
 
 
 
